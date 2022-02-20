@@ -74,37 +74,38 @@ class _StylizedButtonsState extends State<StylizedButtons> {
         Stack(
           alignment: AlignmentDirectional.center,
           children: <Widget>[
+            //Background Image
             Image.network(
               "https://wallpaperboat.com/wp-content/uploads/2021/06/16/77541/windows-11-01.jpg",
               fit: BoxFit.fitWidth,
               height: _height,
               width: double.infinity,
             ),
-            InkWell(
-              onTap: () {
-                setState(() {
-                  _isGPressed = !_isGPressed;
-                });
-              },
-              child: Center(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(_radius),
-                  child: BackdropFilter(
-                    filter: _isGPressed
-                        ? ImageFilter.blur(sigmaX: 10, sigmaY: 10)
-                        : ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+            Center(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(_radius),
+                child: BackdropFilter(
+                  filter: _isGPressed
+                      ? ImageFilter.blur(sigmaX: 1, sigmaY: 1)
+                      : ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                  child: InkWell(
+                    onTap: () {
+                      setState(() {
+                        _isGPressed = !_isGPressed;
+                      });
+                    },
                     child: AnimatedContainer(
                       duration: Duration(milliseconds: 300),
                       decoration: BoxDecoration(
                           border: _isGPressed
-                              ? Border.all(color: Colors.white30)
-                              : Border.all(color: Colors.black87),
+                              ? Border.all(color: Colors.black87)
+                              : Border.all(color: Colors.white30),
                           borderRadius: BorderRadius.circular(_radius),
                           boxShadow: [
                             BoxShadow(
                               color: _isGPressed
-                                  ? Colors.black12.withOpacity(0.5)
-                                  : Colors.white10.withOpacity(0.1),
+                                  ? Colors.white10.withOpacity(0.1)
+                                  : Colors.black12.withOpacity(0.5),
                               blurRadius: 100.0,
                               spreadRadius: 0,
                             )
@@ -127,7 +128,7 @@ class _StylizedButtonsState extends State<StylizedButtons> {
               ),
             )
           ],
-        )
+        ),
       ],
     );
   }
