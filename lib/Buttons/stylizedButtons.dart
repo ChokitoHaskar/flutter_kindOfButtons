@@ -1,29 +1,37 @@
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 class StylizedButtons extends StatefulWidget {
-  const StylizedButtons({Key? key}) : super(key: key);
+  const StylizedButtons({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<StylizedButtons> createState() => _StylizedButtonsState();
 }
 
 class _StylizedButtonsState extends State<StylizedButtons> {
-  bool _isPressed = false;
+  bool _isNPressed = false, _isGPressed = false;
+  double _radius = 20;
+  double _height = 200;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
+        //NeumorphismButton
         Container(
-          height: 200,
+          height: _height,
           color: Colors.grey[300],
           child: Center(
             child: InkWell(
               //Can use GestureDetector if you wanted more control
               onTap: () {
                 setState(() {
-                  _isPressed = !_isPressed;
+                  _isNPressed = !_isNPressed;
                 });
               },
               child: AnimatedContainer(
@@ -35,15 +43,15 @@ class _StylizedButtonsState extends State<StylizedButtons> {
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black54,
-                      spreadRadius: _isPressed ? 2 : 0,
-                      blurRadius: _isPressed ? 5 : 0,
-                      offset: _isPressed ? Offset(5, 5) : Offset(0, 0),
+                      spreadRadius: _isNPressed ? 2 : 0,
+                      blurRadius: _isNPressed ? 5 : 0,
+                      offset: _isNPressed ? Offset(5, 5) : Offset(0, 0),
                     ),
                     BoxShadow(
                       color: Colors.white60,
                       spreadRadius: 0,
-                      blurRadius: _isPressed ? 5 : 0,
-                      offset: _isPressed ? Offset(-5, -5) : Offset(0, 0),
+                      blurRadius: _isNPressed ? 5 : 0,
+                      offset: _isNPressed ? Offset(-5, -5) : Offset(0, 0),
                     )
                   ],
                 ),
@@ -62,6 +70,64 @@ class _StylizedButtonsState extends State<StylizedButtons> {
             ),
           ),
         ),
+        //GlassmorphismButton
+        Stack(
+          alignment: AlignmentDirectional.center,
+          children: <Widget>[
+            Image.network(
+              "https://wallpaperboat.com/wp-content/uploads/2021/06/16/77541/windows-11-01.jpg",
+              fit: BoxFit.fitWidth,
+              height: _height,
+              width: double.infinity,
+            ),
+            InkWell(
+              onTap: () {
+                setState(() {
+                  _isGPressed = !_isGPressed;
+                });
+              },
+              child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(_radius),
+                  child: BackdropFilter(
+                    filter: _isGPressed
+                        ? ImageFilter.blur(sigmaX: 10, sigmaY: 10)
+                        : ImageFilter.blur(sigmaX: 1, sigmaY: 1),
+                    child: AnimatedContainer(
+                      duration: Duration(milliseconds: 300),
+                      decoration: BoxDecoration(
+                          border: _isGPressed
+                              ? Border.all(color: Colors.white30)
+                              : Border.all(color: Colors.black87),
+                          borderRadius: BorderRadius.circular(_radius),
+                          boxShadow: [
+                            BoxShadow(
+                              color: _isGPressed
+                                  ? Colors.black12.withOpacity(0.5)
+                                  : Colors.white10.withOpacity(0.1),
+                              blurRadius: 100.0,
+                              spreadRadius: 0,
+                            )
+                          ]),
+                      height: 150,
+                      width: 150,
+                      child: const Center(
+                        child: Text(
+                          'GLASSMORPHIC BUTTON',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 15),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
+        )
       ],
     );
   }
